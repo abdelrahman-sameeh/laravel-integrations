@@ -1,3 +1,9 @@
+🔐 Authentication & Security
+Social Login (Google/Facebook via Socialite)
+Two-Factor Authentication (2FA)
+API Authentication with Sanctum
+API Rate Limiting
+
 💳 Payment Gateways
 Paymob Integration (Payment Intention + Webhook + HMAC)
 Stripe Integration (Checkout + Webhooks)
@@ -9,12 +15,6 @@ Vodafone Cash Integration
 SMS Gateway (Twilio / SMS Misr) + OTP
 Email Open/Click Tracking (SendGrid / Mailgun Webhooks)
 Real-time Notifications (Pusher / Soketi)
-
-🔐 Authentication & Security
-Social Login (Google/Facebook via Socialite)
-Two-Factor Authentication (2FA)
-API Authentication with Sanctum
-API Rate Limiting
 
 📊 Third-party APIs & Data
 Google Maps Integration
