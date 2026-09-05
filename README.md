@@ -1,4 +1,6 @@
 🔐 Authentication & Security
+JWT
+OAUTH
 Social Login (Google/Facebook via Socialite)
 Two-Factor Authentication (2FA)
 API Authentication with Sanctum
