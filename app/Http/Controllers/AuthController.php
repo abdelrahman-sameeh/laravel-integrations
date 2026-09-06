@@ -17,7 +17,7 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users,email',
             'password' => 'required|string'
         ]);
-        $token = auth('api')->attempt($credentials);
+        $token = auth()->attempt($credentials);
         if (!$token) {
             return response()->json([
                 'error' => 'Unauthorized'
@@ -40,23 +40,23 @@ class AuthController extends Controller
         $user->password = bcrypt($validatedData['password']);
         $user->save();
 
-        $token = auth('api')->login($user);
+        $token = auth()->login($user);
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token, 201);
     }
 
     function me(Request $request)
     {
         return [
-            'user' => auth('api')->user()->only('id', 'name', 'email')
+            'user' => auth()->user()->only('id', 'name', 'email')
         ];
     }
 
     function refresh()
     {
         try {
-            $newToken = auth('api')->refresh();
-            auth('api')->setToken($newToken);
+            $newToken = auth()->refresh();
+            auth()->setToken($newToken);
             return $this->respondWithToken($newToken);
         } catch (TokenExpiredException $e) {
             return response()->json(['error' => 'Refresh token has expired, please login again'], 401);
@@ -71,7 +71,7 @@ class AuthController extends Controller
     function logout()
     {
         try {
-            auth('api')->logout();
+            auth()->logout();
             return response()->json(['message' => 'Successfully logged out']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to logout, please try again'], 500);
@@ -81,11 +81,11 @@ class AuthController extends Controller
     protected function respondWithToken($token, $status = 200)
     {
         return response()->json([
-            'user' => auth('api')->user()->only(['id', 'name', 'email']),
+            'user' => auth()->user()->only(['id', 'name', 'email']),
             'token' => [
                 'access_token' => $token,
                 'token_type' => 'bearer',
-                'expire_in' => auth('api')->factory()->getTTL() * 60,
+                'expire_in' => auth()->factory()->getTTL() * 60,
             ]
         ], $status);
     }
