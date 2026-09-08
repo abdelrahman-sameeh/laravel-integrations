@@ -4,6 +4,8 @@ Two-Factor Authentication (2FA)
 API Authentication with Sanctum
 API Rate Limiting
 
+Realtime messages
+
 💳 Payment Gateways
 Paymob Integration (Payment Intention + Webhook + HMAC)
 Stripe Integration (Checkout + Webhooks)
