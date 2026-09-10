@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RefreshToken;
+use App\Http\Services\AuthService;
 use App\Models\User;
 use Auth;
 use Hash;
 use Illuminate\Http\Request;
-use Str;
 
 class SanctumController extends Controller
 {
+
+    function __construct(private readonly AuthService $authService){}
+
     public function register(Request $request)
     {
         $request->validate([
@@ -25,7 +27,7 @@ class SanctumController extends Controller
         ]);
 
         return response()->json([
-            'data' => $this->getUserWIthToken($user)
+            'data' => $this->authService->getUserWithToken($user)
         ], 201);
     }
 
@@ -45,7 +47,7 @@ class SanctumController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User Logged In Successfully',
-            'data' => $this->getUserWIthToken($user)
+            'data' => $this->authService->getUserWithToken($user)
         ], 200);
     }
 
@@ -79,7 +81,7 @@ class SanctumController extends Controller
             ], 401);
         }
 
-        return $this->generateToken($request->user());
+        return $this->authService->generateToken($request->user());
     }
 
     public function logout(Request $request)
@@ -90,32 +92,6 @@ class SanctumController extends Controller
         return response()->json([
             'message' => 'Logged out successfully'
         ]);
-    }
-
-    private function generateToken(User $user)
-    {
-        // check user has refresh token need make it invalid
-        $user->refreshTokens()->delete();
-        $accessToken = $user->createToken('access_token')->plainTextToken;
-        $refreshToken = Str::random(64);
-        RefreshToken::create([
-            'user_id' => $user->id,
-            'hash_token' => Hash::make($refreshToken),
-            'expires_at' => now()->addDays(30),
-        ]);
-
-        return [
-            'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
-        ];
-    }
-
-    private function getUserWIthToken(User $user)
-    {
-        return [
-            'user' => $user->only('id', 'name', 'email'),
-            'token' => $this->generateToken($user),
-        ];
     }
 
 
