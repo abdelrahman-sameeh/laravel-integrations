@@ -5,8 +5,8 @@ API Authentication with Sanctum
 API Rate Limiting
 
 💳 Payment Gateways
-Paymob Integration (Payment Intention + Webhook + HMAC)
 Stripe Integration (Checkout + Webhooks)
+Paymob Integration (Payment Intention + Webhook + HMAC)
 PayPal Integration
 Fawry Integration
 Vodafone Cash Integration
