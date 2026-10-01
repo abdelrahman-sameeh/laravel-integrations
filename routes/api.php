@@ -1,21 +1,16 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
+=======
+use App\Http\Controllers\SanctumController;
+>>>>>>> feat/auth-sanctum
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 
+<<<<<<< HEAD
 // POST /api/orders
 // GET  /api/orders/{order}
 // POST /api/orders/{order}/pay
@@ -26,3 +21,16 @@ Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 
 
 
+=======
+
+
+
+Route::post('/register', [SanctumController::class, 'register']);
+Route::post('/login', [SanctumController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [SanctumController::class, 'me']);
+    Route::post('/refresh', [SanctumController::class, 'refresh']);
+    Route::post('/logout', [SanctumController::class, 'logout']);
+});
+>>>>>>> feat/auth-sanctum
