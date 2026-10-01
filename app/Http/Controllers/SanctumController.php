@@ -16,16 +16,16 @@ class SanctumController extends Controller
         $request->validate([
             'name' => 'required|string|min:2|max:255',
             'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6|max:255|confirmed'
+            'password' => 'required|string|min:6|max:255|confirmed',
         ]);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
         return response()->json([
-            'data' => $this->getUserWIthToken($user)
+            'data' => $this->getUserWIthToken($user),
         ], 201);
     }
 
@@ -33,49 +33,49 @@ class SanctumController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string'
+            'password' => 'required|string',
         ]);
         $user = User::where('email', $request->email)->first();
-        if (!Auth::attempt($request->only(['email', 'password']))) {
+        if (! Auth::attempt($request->only(['email', 'password']))) {
             return response()->json([
                 'status' => false,
                 'message' => 'Email & Password does not match with our record.',
             ], 401);
         }
+
         return response()->json([
             'status' => true,
             'message' => 'User Logged In Successfully',
-            'data' => $this->getUserWIthToken($user)
+            'data' => $this->getUserWIthToken($user),
         ], 200);
     }
 
     public function me(Request $request)
     {
         return response()->json([
-            'data' => $request->user()->only('id', 'name', 'email')
+            'data' => $request->user()->only('id', 'name', 'email'),
         ]);
     }
-
 
     public function refresh(Request $request)
     {
         $validatedData = $request->validate([
-            'refresh_token' => 'required|string|max:64'
+            'refresh_token' => 'required|string|max:64',
         ]);
         $hashedRefreshToken = $request->user()->refreshTokens()
             ->where('expires_at', '>', now())->first();
 
-        if (!$hashedRefreshToken) {
+        if (! $hashedRefreshToken) {
             return response()->json([
-                'message' => 'Invalid or expired refresh token'
+                'message' => 'Invalid or expired refresh token',
             ], 401);
         }
 
         $isValid = Hash::check($validatedData['refresh_token'], $hashedRefreshToken['hash_token']);
 
-        if (!$isValid) {
+        if (! $isValid) {
             return response()->json([
-                'message' => 'Invalid or expired refresh token'
+                'message' => 'Invalid or expired refresh token',
             ], 401);
         }
 
@@ -88,7 +88,7 @@ class SanctumController extends Controller
         $request->user()->currentAccessToken()?->delete();
 
         return response()->json([
-            'message' => 'Logged out successfully'
+            'message' => 'Logged out successfully',
         ]);
     }
 
@@ -117,7 +117,4 @@ class SanctumController extends Controller
             'token' => $this->generateToken($user),
         ];
     }
-
-
-
 }

@@ -12,7 +12,6 @@ class Order extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'number',
         'user_id',
@@ -21,14 +20,11 @@ class Order extends Model
         'status',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'total_amount' => 'integer',
-            'status' => OrderStatus::class,
-        ];
-    }
-
+    protected $casts = [
+        'user_id' => 'integer',
+        'total_amount' => 'integer',
+        'status' => OrderStatus::class,
+    ];
 
     public function user(): BelongsTo
     {
@@ -39,7 +35,4 @@ class Order extends Model
     {
         return $this->hasMany(Payment::class);
     }
-
-
-
 }

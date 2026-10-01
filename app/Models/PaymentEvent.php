@@ -20,18 +20,14 @@ class PaymentEvent extends Model
         'failure_message',
     ];
 
-
-    protected function casts(): array
-    {
-        return [
-            'payload' => 'array',
-            'processed_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'payment_id' => 'integer',
+        'payload' => 'array',
+        'processed_at' => 'datetime',
+    ];
 
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
     }
-
 }
