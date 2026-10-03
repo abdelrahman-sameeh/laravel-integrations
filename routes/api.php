@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FakePaymentWebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderPaymentController;
 use App\Http\Controllers\SanctumController;
@@ -17,8 +18,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Payment App
 // POST /api/webhooks/fake-payment
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
     Route::post('orders/{order}/payments', [OrderPaymentController::class, 'store']);
 });
+if (app()->environment(['local', 'testing'])) {
+    Route::post(
+        '/webhooks/fake-payment',
+        FakePaymentWebhookController::class
+    );
+}
