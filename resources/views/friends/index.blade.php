@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
     <title>الأصدقاء | وصلة</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="chat-page">
     <div class="container-fluid">
         <div class="row">
@@ -58,15 +60,18 @@
                                                 <p class="text-secondary small mb-0">{{ $item['user']->email }}</p>
                                             </div>
                                             <div class="d-flex gap-2">
-                                                <form action="{{ route('friend-requests.accept', $item['friendship']) }}" method="post">
+                                                <form action="{{ route('friend-requests.accept', $item['friendship']) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button class="btn btn-primary btn-sm px-3" type="submit">قبول</button>
                                                 </form>
-                                                <form action="{{ route('friend-requests.destroy', $item['friendship']) }}" method="post">
+                                                <form action="{{ route('friend-requests.destroy', $item['friendship']) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-outline-secondary btn-sm px-3" type="submit">رفض</button>
+                                                    <button class="btn btn-outline-secondary btn-sm px-3"
+                                                        type="submit">رفض</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -91,14 +96,21 @@
                             @foreach ($friends as $item)
                                 <div class="col-sm-6 col-xl-4">
                                     <article class="card border-0 shadow-sm h-100 rounded-4">
-                                        <div class="card-body d-flex align-items-center gap-3 p-4">
-                                            <span class="friend-avatar bg-success-subtle text-success" aria-hidden="true">
-                                                <i class="bi bi-person-check"></i>
-                                            </span>
-                                            <div class="min-w-0">
-                                                <h3 class="h6 fw-bold mb-1">{{ $item['user']->name }}</h3>
-                                                <p class="text-secondary small text-truncate mb-0">{{ $item['user']->email }}</p>
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <span class="friend-avatar bg-success-subtle text-success" aria-hidden="true">
+                                                    <i class="bi bi-person-check"></i>
+                                                </span>
+                                                <div class="min-w-0">
+                                                    <h3 class="h6 fw-bold mb-1">{{ $item['user']->name }}</h3>
+                                                    <p class="text-secondary small text-truncate mb-0">
+                                                        {{ $item['user']->email }}
+                                                    </p>
+                                                </div>
                                             </div>
+                                            <a href="{{ route('conversation.show', $item['user']) }}" class="btn btn-outline-secondary" aria-label="محادثة {{ $item['user']->name }}">
+                                                <i class="bi bi-chat-dots"></i>
+                                            </a>
                                         </div>
                                     </article>
                                 </div>
@@ -127,9 +139,11 @@
                             <h2 class="h5 fw-bold mb-1" id="discover-title">ابحث عن أصدقاء</h2>
                             <p class="text-secondary small mb-0">ابحث بالاسم أو البريد الإلكتروني.</p>
                         </div>
-                        <form action="{{ route('friends.index') }}" method="get" class="d-flex gap-2 friends-search" role="search">
+                        <form action="{{ route('friends.index') }}" method="get" class="d-flex gap-2 friends-search"
+                            role="search">
                             <label class="visually-hidden" for="friends-search">البحث عن صديق</label>
-                            <input class="form-control" id="friends-search" name="search" type="search" value="{{ $search }}" placeholder="الاسم أو البريد">
+                            <input class="form-control" id="friends-search" name="search" type="search"
+                                value="{{ $search }}" placeholder="الاسم أو البريد">
                             <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
                         </form>
                     </div>
@@ -140,12 +154,14 @@
                                 <article class="card border-0 shadow-sm h-100 rounded-4">
                                     <div class="card-body p-4">
                                         <div class="d-flex align-items-center gap-3 mb-3">
-                                            <span class="friend-avatar bg-info-subtle text-info-emphasis" aria-hidden="true">
+                                            <span class="friend-avatar bg-info-subtle text-info-emphasis"
+                                                aria-hidden="true">
                                                 <i class="bi bi-person-plus"></i>
                                             </span>
                                             <div class="min-w-0">
                                                 <h3 class="h6 fw-bold mb-1">{{ $candidate->name }}</h3>
-                                                <p class="text-secondary small text-truncate mb-0">{{ $candidate->email }}</p>
+                                                <p class="text-secondary small text-truncate mb-0">{{ $candidate->email }}
+                                                </p>
                                             </div>
                                         </div>
                                         <form action="{{ route('friends.store', $candidate) }}" method="post">
@@ -179,4 +195,5 @@
         </div>
     </div>
 </body>
+
 </html>

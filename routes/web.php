@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\FriendController;
 use Illuminate\Support\Facades\Route;
@@ -23,18 +26,16 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 });
 
 Route::middleware('auth')->group(function () {
-    Route::view('/chat', 'chat')->name('chat');
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
     Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
     Route::post('/friends/{user}/requests', [FriendController::class, 'store'])->name('friends.store');
     Route::patch('/friend-requests/{friendship}/accept', [FriendController::class, 'accept'])->name('friend-requests.accept');
     Route::delete('/friend-requests/{friendship}', [FriendController::class, 'destroy'])->name('friend-requests.destroy');
+
+    Route::get('/conversation/{user}', [ConversationController::class, 'show'])->name('conversation.show');
+    Route::post('/conversation/{user}/messages', [MessageController::class, 'store'])->name('message.store');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::redirect('/', '/chat');
-
-// GET     /api/conversations	يجيب كل الـconversations بتاعة الـuser
-// POST	/api/conversations	يبدأ conversation جديدة مع user تاني
-// GET	/api/conversations/{conversation}	يجيب معلومات الـconversation
-// GET	/api/conversations/{conversation}/messages	يجيب الرسائل، ويفضل Pagination
-// POST	/api/conversations/{conversation}/messages  يبعت Message جديدة
